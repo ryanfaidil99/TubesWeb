@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pupuk Tani Indonesia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================ LOGIN / REGISTER POPUP ================= -->
+<div id="auth-popup" class="overlay hidden">
+    <div class="popup-box">
+        <h2 id="auth-title">Masuk Akun</h2>
+
+        <input type="text" id="auth-username" placeholder="Username">
+        <input type="password" id="auth-password" placeholder="Password">
+
+        <button onclick="submitAuth()" class="btn-primary" id="auth-btn">Masuk</button>
+
+        <p class="switch-text">
+            <span id="switch-auth"></span>
+        </p>
+
+        <button class="close-btn" onclick="closeAuth()">Tutup</button>
+    </div>
+</div>
+
+<!-- ===================== CHECKOUT POPUP ===================== -->
+<div id="checkout-popup" class="overlay hidden">
+    <div class="popup-box">
+        <h2>Checkout Pesanan</h2>
+
+        <input type="text" id="co-nama" placeholder="Nama lengkap">
+        <input type="text" id="co-alamat" placeholder="Alamat lengkap">
+        <input type="text" id="co-wa" placeholder="Nomor WhatsApp">
+
+        <select id="co-metode">
+            <option value="">Pilih metode pembayaran</option>
+            <option>Transfer Bank</option>
+            <option>COD</option>
+            <option>E-Wallet (Dana/OVO/GoPay)</option>
+        </select>
+
+        <button class="btn-primary" onclick="kirimPesanan()">Kirim Pesanan</button>
+        <button class="close-btn" onclick="closeCheckout()">Batal</button>
+    </div>
+</div>
+
+<!-- ===================== STATUS PESANAN ===================== -->
+<div id="status-page" class="hidden">
+    <header>
+        <h1>Status Pesanan</h1>
+        <button class="nav-btn" onclick="showMain()">Kembali</button>
+    </header>
+
+    <div class="status-box">
+        <h2>Riwayat Pesanan Anda</h2>
+        <div id="order-list"></div>
+    </div>
+</div>
+
+<!-- ===================== HALAMAN UTAMA ===================== -->
+<div id="main-page">
+
+    <header>
+        <h1>Pupuk Tani Indonesia</h1>
+
+        <div class="nav-right">
+            <button class="nav-btn" onclick="showStatus()">Status Pesanan</button>
+
+            <button class="nav-btn" id="login-btn" onclick="openLogin()">Login / Daftar</button>
+            <button class="nav-btn hidden" id="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <section class="product-section">
+        <h2 class="section-title">Daftar Produk Pupuk</h2>
+
+        <div class="product-list">
+
+            <div class="product-card">
+                <div class="product-img urea"></div>
+                <h3>Pupuk Urea</h3>
+                <p class="price">Rp 120.000 / karung</p>
+                <div class="qty-control">
+                    <button onclick="changeQty('urea', -1)">−</button>
+                    <span id="qty-urea">0</span>
+                    <button onclick="changeQty('urea', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img npk"></div>
+                <h3>NPK Phonska</h3>
+                <p class="price">Rp 150.000 / karung</p>
+                <div class="qty-control">
+                    <button onclick="changeQty('npk', -1)">−</button>
+                    <span id="qty-npk">0</span>
+                    <button onclick="changeQty('npk', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img sp36"></div>
+                <h3>Pupuk SP-36</h3>
+                <p class="price">Rp 135.000 / karung</p>
+                <div class="qty-control">
+                    <button onclick="changeQty('sp36', -1)">−</button>
+                    <span id="qty-sp36">0</span>
+                    <button onclick="changeQty('sp36', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img petro"></div>
+                <h3>Pupuk Petroganik</h3>
+                <p class="price">Rp 40.000 / sak</p>
+                <div class="qty-control">
+                    <button onclick="changeQty('petro', -1)">−</button>
+                    <span id="qty-petro">0</span>
+                    <button onclick="changeQty('petro', 1)">+</button>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+    </section>
+</div>
+
+<script>
+
+/* ---------------------------------------
+   MODE LOGIN / REGISTER
+--------------------------------------- */
+let authMode = "login";
+
+function openLogin() {
+    authMode = "login";
+    document.getElementById("auth-title").innerText = "Masuk Akun";
+    document.getElementById("auth-btn").innerText = "Masuk";
+    document.getElementById("switch-auth").innerHTML =
+        `Belum punya akun? <a onclick="switchAuth()">Daftar</a>`;
+
+    document.getElementById("auth-popup").classList.remove("hidden");
+}
+
+function switchAuth() {
+    authMode = authMode === "login" ? "register" : "login";
+
+    if (authMode === "register") {
+        document.getElementById("auth-title").innerText = "Daftar Akun Baru";
+        document.getElementById("auth-btn").innerText = "Daftar";
+        document.getElementById("switch-auth").innerHTML =
+            `Sudah punya akun? <a onclick="switchAuth()">Masuk</a>`;
+    } else {
+        openLogin();
+    }
+}
+
+function closeAuth() {
+    document.getElementById("auth-popup").classList.add("hidden");
+}
+
+/* ---------------------------------------
+   LOGIN / DAFTAR SYSTEM
+--------------------------------------- */
+function submitAuth() {
+    let u = document.getElementById("auth-username").value;
+    let p = document.getElementById("auth-password").value;
+
+    if (!u || !p) {
+        alert("Semua field wajib diisi!");
+        return;
+    }
+
+    if (authMode === "register") {
+        localStorage.setItem("user", u);
+        localStorage.setItem("pass", p);
+        alert("Registrasi berhasil!");
+        openLogin();
+        return;
+    }
+
+    if (u === localStorage.getItem("user") &&
+        p === localStorage.getItem("pass")) {
+
+        localStorage.setItem("logged", "true");
+
+        document.getElementById("login-btn").classList.add("hidden");
+        document.getElementById("logout-btn").classList.remove("hidden");
+
+        closeAuth();
+        closeCheckout(); // pastikan tidak muncul
+
+        alert("Login berhasil!");
+    } else {
+        alert("Username atau password salah!");
+    }
+}
+
+/* ---------------------------------------
+   LOGOUT
+--------------------------------------- */
+function logout() {
+    localStorage.removeItem("logged");
+    location.reload();
+}
+
+/* ---------------------------------------
+   PRODUK & QUANTITY
+--------------------------------------- */
+let qty = { urea:0, npk:0, sp36:0, petro:0 };
+
+function changeQty(item, val) {
+    if (localStorage.getItem("logged") !== "true") {
+        alert("Harus login terlebih dahulu.");
+        return;
+    }
+
+    qty[item] = Math.max(0, qty[item] + val);
+    document.getElementById("qty-" + item).innerText = qty[item];
+}
+
+/* ---------------------------------------
+   OPEN CHECKOUT
+--------------------------------------- */
+function openCheckout() {
+    if (localStorage.getItem("logged") !== "true") {
+        alert("Silakan login untuk melanjutkan.");
+        return;
+    }
+
+    let total = qty.urea + qty.npk + qty.sp36 + qty.petro;
+
+    if (total === 0) {
+        alert("Pilih minimal satu produk!");
+        return;
+    }
+
+    document.getElementById("checkout-popup").classList.remove("hidden");
+}
+
+function closeCheckout() {
+    document.getElementById("checkout-popup").classList.add("hidden");
+}
+
+/* ---------------------------------------
+   SEND ORDER
+--------------------------------------- */
+function kirimPesanan() {
+    let nama = document.getElementById("co-nama").value;
+    let alamat = document.getElementById("co-alamat").value;
+    let wa = document.getElementById("co-wa").value;
+    let metode = document.getElementById("co-metode").value;
+
+    if (!nama || !alamat || !wa || !metode) {
+        alert("Semua data wajib diisi!");
+        return;
+    }
+
+    let newOrder = {
+        nama, alamat, wa, metode,
+        produk: { ...qty },
+        waktu: new Date().toLocaleString()
+    };
+
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    orders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    alert("Pesanan berhasil dikirim!");
+
+    qty = { urea:0, npk:0, sp36:0, petro:0 };
+    document.querySelectorAll(".qty-control span").forEach(x => x.innerText = "0");
+
+    closeCheckout();
+}
+
+/* ---------------------------------------
+   STATUS PESANAN
+--------------------------------------- */
+function showStatus() {
+    document.getElementById("main-page").classList.add("hidden");
+    document.getElementById("status-page").classList.remove("hidden");
+
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+
+    document.getElementById("order-list").innerHTML =
+        orders.length === 0
+        ? "<p>Belum ada pesanan.</p>"
+        : orders.map(o => `
+            <div class="order-item">
+                <h3>${o.nama}</h3>
+                <p><b>Alamat:</b> ${o.alamat}</p>
+                <p><b>WA:</b> ${o.wa}</p>
+                <p><b>Metode:</b> ${o.metode}</p>
+                <p><b>Produk:</b> ${JSON.stringify(o.produk)}</p>
+                <p><i>${o.waktu}</i></p>
+            </div>`).join("");
+}
+
+function showMain() {
+    document.getElementById("status-page").classList.add("hidden");
+    document.getElementById("main-page").classList.remove("hidden");
+}
+
+/* ---------------------------------------
+   ON LOAD
+--------------------------------------- */
+window.onload = () => {
+    document.getElementById("auth-popup").classList.add("hidden");
+    document.getElementById("checkout-popup").classList.add("hidden");
+
+    if (localStorage.getItem("logged") === "true") {
+        document.getElementById("login-btn").classList.add("hidden");
+        document.getElementById("logout-btn").classList.remove("hidden");
+    }
+};
+
+</script>
+
+</body>
+</html>

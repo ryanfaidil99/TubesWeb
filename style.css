@@ -1,0 +1,296 @@
+/* =========================================================
+   RESET BASIC
+========================================================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #eef7ee;
+    color: #333;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   HEADER / NAVBAR
+========================================================= */
+header {
+    background: linear-gradient(90deg, #2e7d32, #4caf50);
+    padding: 18px 25px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.nav-right {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-btn {
+    background: #ffffff;
+    color: #2e7d32;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.nav-btn:hover {
+    background: #e8e8e8;
+}
+
+/* =========================================================
+   PRODUCT SECTION
+========================================================= */
+.product-section {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.section-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px;
+}
+
+.product-card {
+    width: 260px;
+    background: white;
+    border-radius: 15px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transition: 0.25s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+.product-card h3 {
+    margin-top: 12px;
+}
+
+.product-img {
+    width: 100%;
+    height: 150px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+}
+
+.urea { background-image: url("images/urea.jpg"); }
+.npk { background-image: url("images/npk-phonska.jpg"); }
+.sp36 { background-image: url("images/sp36.jpg"); }
+.petro { background-image: url("images/petroganik.jpg"); }
+
+.price {
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.qty-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.qty-control button {
+    width: 35px;
+    height: 35px;
+    background: #2e7d32;
+    color: white;
+    font-size: 20px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.qty-control button:hover {
+    background: #1b5e20;
+}
+
+/* =========================================================
+   CHECKOUT BUTTON
+========================================================= */
+.checkout-btn {
+    margin-top: 25px;
+    padding: 14px 36px;
+    background: #388e3c;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 19px;
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+.checkout-btn:hover {
+    background: #2e7d32;
+}
+
+/* =========================================================
+   POPUP OVERLAY
+========================================================= */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-box {
+    background: white;
+    width: 380px;
+    padding: 32px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-box h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.popup-box input,
+.popup-box select {
+    width: 92%;
+    padding: 12px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #4caf50;
+    transition: 0.2s;
+}
+
+.popup-box input:focus,
+.popup-box select:focus {
+    border-color: #2e7d32;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76,175,80,0.6);
+}
+
+/* =========================================================
+   BUTTON TYPES
+========================================================= */
+
+/* Tombol hijau: aksi utama */
+.btn-primary {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background: #1b5e20;
+}
+
+/* Tombol merah: aksi batal */
+.btn-danger {
+    background: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 0.25s;
+}
+.btn-danger:hover {
+    background: #b71c1c;
+}
+
+/* Link biru untuk switch login/register */
+.switch-text {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.switch-text a {
+    color: #1565c0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.switch-text a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   STATUS PAGE
+========================================================= */
+.status-box {
+    padding: 22px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.order-item {
+    background: white;
+    padding: 18px;
+    margin-bottom: 15px;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.13);
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   RESPONSIVE FIXES
+========================================================= */
+@media (max-width: 480px) {
+    .popup-box {
+        width: 90%;
+    }
+    .product-card {
+        width: 92%;
+    }
+    header h1 {
+        font-size: 22px;
+    }
+}
